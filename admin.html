@@ -1,0 +1,104 @@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!--style.css-->
+    <link rel="stylesheet" href="style.css">
+
+    <body class="body-1">
+
+
+        <style>
+            img {
+                height: 100px;
+                width: 100px;
+                border-radius: 100%;
+            }
+
+            .container {
+                margin-top: 12%;
+            }
+
+            * {
+                text-align: center;
+            }
+        </style>
+
+        <?php
+        // Start session
+        session_start();
+
+
+        // (1.) Establish connection to MySQL
+        $conn = mysqli_connect("localhost", "root", "", "gers_db") or die("db not connected");
+
+
+        // (2.) Check connection
+        //  if (!$conn) {
+        //  die("Connection failed: " . mysqli_connect_error());
+        //}
+
+        //check if the login button was clicked
+        if (isset($_POST['login'])) {
+            $user = $_POST['user'];
+            $password = $_POST['pass'];
+
+           $sql = "SELECT * FROM admin_log WHERE username = '$user'";
+           $query = mysqli_query($conn, $sql);
+
+           // if (mysqli_num_rows($query) == 1) {
+                $row = mysqli_fetch_array($query, MYSQLI_ASSOC);
+
+           if($row) {
+            if (password_verify($password, $row["password"])){
+               header ("Location: admin-dashboard.php");
+               exit();
+            
+            }else{
+                echo "<script>alert ('Invalid password')</script>";
+            }
+        }else{
+                echo "<script>alert ('Invalid userame ')</script>";
+            }
+    }
+        ?>
+        <!----------------------------------->
+        <!-------------Login----------------->
+        <!----------------------------------->
+        <div class="container" id="signup">
+            <h1 class="form-title">Log In</h1>
+            <form method="post" action="admin-login.php">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="user" id="username" placeholder="User Name..." required>
+                    <label for="fname">Username</label>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="pass" id="password" placeholder="Password..." required>
+                    <label for="password">Password</label>
+                </div>
+                <br><br>
+                <input style="color: white; background-color: blue; width: 23%; padding-right: 15%;" type="submit" class="btn" value="Log In" name="login">
+            </form>
+
+            <p class="or">
+                -----------------or-----------------
+            </p>
+            <div class="icons">
+                <i class="fab fa-google"></i>
+                <i class="fab fa-facebook"></i>
+            </div>
+            <div class="links">
+                <p>Don't Have An Account?</p>
+                <button id="signInButton"><a href="admin-register.php">Register</a></button>
+            </div>
+        </div>
+        <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                alert('hello.');
+            });
+        </script>
+        -->
+    </body>
