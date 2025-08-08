@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+</head>
+<style>
+    #input1 {
+        height: 40px;
+        width: 600px;
+    }
+
+    #input2 {
+        height: 100px;
+        width: 600px;
+    }
+
+    #submit {
+        height: 40px;
+        width: 20%;
+        color: white;
+        background-color: black;
+        border-radius: 6%;
+    }
+
+    .submit-container {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #body {
+        background-color: skyblue;
+        margin-top: 30%;
+        transition: all;
+    }
+
+    #h1 {
+        text-align: center;
+        font-size: 50px;
+    }
+
+    body {
+        background-image: url('../images/Burj\ Khalifa-img2.jpg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+</style>
+
+<body>
+    <h1 id="h1">Contact</h1>
+    <div class="row">
+        <div style="margin-left: 40%; width: 30%;" class="col-md-3">
+            <fieldset id="body">
+
+                <!------------------------------------------>
+                <!------Inserting Data into database-------->
+                <!------------------------------------------>
+                <?php
+                include "../Database/db-connection.php"; // your DB connection file
+
+                if (isset($_POST['submit'])) {
+                    $name = $_POST['name'];
+                    $email = $_POST['email'];
+                    $message = $_POST['message'];
+
+                    // Proper SQL insert using the correct field names
+                    $sql = "INSERT INTO contact_tb (name_tb, email_tb, message_tb) VALUES ('$name', '$email', '$message')";
+
+                    if (mysqli_query($conn, $sql)) {
+                        echo "<script>alert('Data saved successfully.');</script>";
+                    } else {
+                        echo "<script>alert('Error saving data.');</script>";
+                    }
+                }
+                ?>
+
+                <form action="" method="POST">
+                    <h3 style="text-align: center;">Send Your Feedback</h3>
+                    <br>
+                    <hr>
+                    <br>
+                    <label for="">
+                        <b>User_Name:</b>
+                        <br>
+                        <input id="input1" name="name" placeholder="placeholder" required>
+                        <br>
+                    </label>
+                    <br>
+                    <label for="">
+                        <b>Email:</b>
+                        <br>
+                        <input id="input1" name="email" placeholder="placeholder" required>
+                        <br>
+                    </label>
+                    <br>
+                    <label for="">
+                        <b>Message:</b>
+                        <br>
+                        <input id="input2" type="text" name="message" placeholder="placeholder" required>
+                        <br>
+                    </label>
+                    <br>
+                    <hr>
+                    <div class="submit-container">
+                        <input id="submit" type="submit" name="submit" value="Submit">
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</body>
+
+</html>
